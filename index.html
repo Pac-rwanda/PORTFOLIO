@@ -1785,6 +1785,18 @@ const firebaseConfig = {
                 }, 3000);
             });
         });
+        // Get visitor ID or create new one
+let visitorId = localStorage.getItem('visitorId');
+if (!visitorId) {
+  visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9);
+  localStorage.setItem('visitorId', visitorId);
+}
+
+// Track page visit
+db.collection("visitors").doc(visitorId).set({
+  lastVisit: firebase.firestore.FieldValue.serverTimestamp(),
+  pageVisits: firebase.firestore.FieldValue.increment(1)
+}, { merge: true });
     </script>
     
     <style>
