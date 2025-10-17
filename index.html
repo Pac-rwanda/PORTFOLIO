@@ -1149,7 +1149,85 @@
             background: #c0392b;
             transform: translateY(-5px);
         }
-        a{text-decoration: none;}
+        
+    a { text-decoration: none; }
+
+    /* Floating Animated Advertisement */
+    .floating-ad {
+      position: fixed;
+      bottom: 30px;
+      right: 90px;
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+      color: #fff;
+      padding: 18px 28px;
+      border-radius: 40px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      z-index: 99999;
+      cursor: grab;
+      user-select: none;
+      animation: colorShift 8s infinite linear, shake 2s infinite ease-in-out;
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: 90vw;
+    }
+
+    .floating-ad:hover {
+      transform: scale(1.1);
+      cursor: grabbing;
+    }
+
+    /* Color change animation */
+    @keyframes colorShift {
+      0% { background: linear-gradient(45deg, #ff6a00, #ee0979); }
+      25% { background: linear-gradient(45deg, #f7971e, #ffd200); }
+      50% { background: linear-gradient(45deg, #00c6ff, #0072ff); }
+      75% { background: linear-gradient(45deg, #8e2de2, #4a00e0); }
+      100% { background: linear-gradient(45deg, #ff6a00, #ee0979); }
+    }
+
+    /* Left-right shake */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-3px); }
+    }
+
+    /* Click counter badge */
+    .click-count {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Responsive for smaller screens */
+    @media (max-width: 600px) {
+      .floating-ad {
+        bottom: 15px;
+        right: 15px;
+        font-size: 15px;
+        padding: 14px 22px;
+      }
+      .click-count {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .floating-ad {
+        bottom: 10px;
+        right: 10px;
+        font-size: 13px;
+        padding: 12px 18px;
+      }
+    }
     </style>
 </head>
 <body>
@@ -1182,6 +1260,75 @@
         </div>
     </header>
     
+    
+  <a href="https://your-destination-url.com"
+     class="floating-ad"
+     id="floatingAd"
+     data-interact-trigger
+     data-tool-id="59922">
+     💎 Access Exclusive Deals
+  </a>
+ <!-- CPAlead Integration -->
+  <script>
+    window.CPAlead_PublisherUserId = 3306299;
+  </script>
+  <script src="https://cdnflair.com/js/interact-form.js" async defer></script>
+    <!-- Drag and Move Logic -->
+  <script>
+    const ad = document.getElementById("floatingAd");
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    ad.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - ad.getBoundingClientRect().left;
+      offsetY = e.clientY - ad.getBoundingClientRect().top;
+      ad.style.animation = "none"; // Stop shaking while dragging
+      ad.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        ad.style.left = e.clientX - offsetX + "px";
+        ad.style.top = e.clientY - offsetY + "px";
+        ad.style.bottom = "auto";
+        ad.style.right = "auto";
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (isDragging) {
+        isDragging = false;
+        ad.style.cursor = "grab";
+        ad.style.animation = "colorShift 8s infinite linear, shake 2s infinite ease-in-out";
+      }
+    });
+
+    // Touch support for mobile
+    ad.addEventListener("touchstart", (e) => {
+      isDragging = true;
+      const touch = e.touches[0];
+      offsetX = touch.clientX - ad.getBoundingClientRect().left;
+      offsetY = touch.clientY - ad.getBoundingClientRect().top;
+      ad.style.animation = "none";
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (isDragging) {
+        const touch = e.touches[0];
+        ad.style.left = touch.clientX - offsetX + "px";
+        ad.style.top = touch.clientY - offsetY + "px";
+        ad.style.bottom = "auto";
+        ad.style.right = "auto";
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      isDragging = false;
+      ad.style.animation = "colorShift 8s infinite linear, shake 2s infinite ease-in-out";
+    });
+  </script>
+
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="container">
@@ -1433,12 +1580,7 @@
                         </div>
                     </div>
 
-                                        <div class="contact-item">
-                        <a href="https://github.com/_ayubu._" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/_ayubu._" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://twitter.com/_ayubu._" aria-label="Twitter Profile"><i class="fab fa-twitter"></i></a>
-                        <a href="https://www.instagram.com/_ayubu._" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
-                    </div>
+                    
                     
                     <div class="social-links">
                         <a href="https://github.com/_ayubu._" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
@@ -1830,5 +1972,7 @@ db.collection("visitors").doc(visitorId).set({
             background: var(--accent);
         }
     </style>
+    <script src="https://assistantayubu-ai.netlify.app/chatbot-loader.js"></script>
+
 </body>
 </html>
