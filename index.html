@@ -149,17 +149,27 @@
             color: var(--text-color);
         }
         
-        /* Hero Section */
-        .hero-section {
-            padding: 8rem 0 4rem;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+/* Hero Section */
+.hero-section {
+    position: relative;
+    padding: 8rem 0 4rem;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Video background */
+.hero-bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;      /* Makes video fill the entire section */
+    z-index: -1;            /* Push behind content */
+}
         
-        .hero-section::before {
+ .hero-section::before {
             content: '';
             position: absolute;
             top: 0;
@@ -170,32 +180,32 @@
             background-size: cover;
         }
         
-        .hero-wrapper {
+ .hero-wrapper {
             position: relative;
             z-index: 1;
         }
         
-        .hero-title {
+ .hero-title {
             font-size: 3rem;
             margin-bottom: 1rem;
             font-weight: 700;
         }
         
-        .hero-description {
+ .hero-description {
             font-size: 1.2rem;
             max-width: 700px;
             margin: 0 auto 2rem;
             opacity: 0.9;
         }
         
-        .hero-buttons {
+ .hero-buttons {
             display: flex;
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
         }
         
-        .btn {
+ .btn {
             display: inline-block;
             padding: 0.8rem 2rem;
             background-color: white;
@@ -207,18 +217,18 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .btn:hover {
+ .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
         
-        .btn-outline {
+ .btn-outline {
             background-color: transparent;
             color: white;
             border: 2px solid white;
         }
         
-        .btn-outline:hover {
+.btn-outline:hover {
             background-color: white;
             color: var(--primary-color);
         }
@@ -821,19 +831,29 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero-section">
-        <div class="main-container">
-            <div class="hero-wrapper">
-                <h1 class="hero-title">Welcome to My Digital Universe</h1>
-                <p class="hero-description">Explore my collection of websites and digital projects, each crafted with passion and precision to deliver exceptional user experiences.</p>
-                <div class="hero-buttons">
-                    <a href="#projects" class="btn">Explore Projects</a>
-                    <a href="#contact" class="btn btn-outline">Get In Touch</a>
-                </div>
+<!-- Hero Section -->
+<section id="home" class="hero-section">
+    <!-- Background Video -->
+    <video autoplay muted loop playsinline class="hero-bg-video">
+        <source src="video/your-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Content -->
+    <div class="main-container">
+        <div class="hero-wrapper">
+            <h1 class="hero-title">Welcome to My Digital Universe</h1>
+            <p class="hero-description">
+                Explore my collection of websites and digital projects, each crafted with passion and precision to deliver exceptional user experiences.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn">Explore Projects</a>
+                <a href="#contact" class="btn btn-outline">Get In Touch</a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
         <!-- Owner Section -->
     <section id="owner" class="owner-section">
@@ -966,7 +986,7 @@
                         <h3>Personal Portfolio</h3>
                         <p>A showcase of my work, skills, and experience as a web developer and digital creator.</p>
                         <div class="project-links">
-                            <a href="https://ayubu.netlify.app" target="_blank"></a>
+                            <a href="https://ayubu.netlify.app" target="_blank"><i class="fas fa-external-link-alt"></i> Visit Site</a>
                         </div>
                     </div>
                 </div>
@@ -1177,7 +1197,7 @@
     <script>
         // Initialize EmailJS
         (function() {
-            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+            emailjs.init("FuXAQIGLPgrKk4Gaj"); // Replace with your EmailJS public key
         })();
 
         // Mobile menu toggle
@@ -1198,6 +1218,12 @@
                 e.preventDefault();
                 
                 const targetId = this.getAttribute('href');
+                
+                // Skip empty or invalid href attributes
+                if (!targetId || targetId === '#') {
+                    return;
+                }
+                
                 const targetElement = document.querySelector(targetId);
                 
                 if (targetElement) {
@@ -1238,51 +1264,60 @@
             submitBtn.disabled = true;
             submitBtn.textContent = 'Sending...';
             
-            // Prepare the email parameters
-            const templateParams = {
-                from_name: name,
-                from_email: email,
-                subject: subject,
-                message: message,
-                to_email: 'ayubu.7.kaj@gmail.com' // Your email address
-            };
-            
-            // Send the email using EmailJS
-            emailjs.send('service_jr8bx2k', 'template_hdc3bpj', templateParams)
-                .then(function(response) {
-                    // Show success message
-                    formMessage.textContent = 'Thank you for your message! I\'ll get back to you soon.';
-                    formMessage.className = 'form-feedback success';
-                    formMessage.style.display = 'block';
-                    
-                    // Reset form
-                    document.getElementById('contactForm').reset();
-                    
-                    // Reset button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Send Message';
-                    
-                    // Hide message after 5 seconds
-                    setTimeout(function() {
-                        formMessage.style.display = 'none';
-                    }, 5000);
-                }, function(error) {
-                    // Show error message
-                    formMessage.textContent = 'Oops! Something went wrong. Please try again later.';
-                    formMessage.className = 'form-feedback error';
-                    formMessage.style.display = 'block';
-                    
-                    // Reset button
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Send Message';
-                    
-                    // Hide message after 5 seconds
-                    setTimeout(function() {
-                        formMessage.style.display = 'none';
-                    }, 5000);
-                    
-                    console.log('FAILED...', error);
-                });
+            // Check if EmailJS is properly initialized
+            if (typeof emailjs !== 'undefined') {
+                // Prepare the email parameters with proper field names
+                const templateParams = {
+                    name: name,
+                    email: email,
+                    subject: subject,
+                    message: message
+                };
+                
+                // Send the email using EmailJS
+                emailjs.send('service_jr8bx2k', 'template_hdc3bpj', templateParams)
+                    .then(function(response) {
+                        // Show success message
+                        formMessage.textContent = 'Thank you for your message! I\'ll get back to you soon.';
+                        formMessage.className = 'form-feedback success';
+                        formMessage.style.display = 'block';
+                        
+                        // Reset form
+                        document.getElementById('contactForm').reset();
+                        
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send Message';
+                        
+                        // Hide message after 5 seconds
+                        setTimeout(function() {
+                            formMessage.style.display = 'none';
+                        }, 5000);
+                    }, function(error) {
+                        // Show more detailed error message
+                        console.log('EmailJS error details:', error);
+                        formMessage.textContent = 'Oops! Something went wrong. Please try again later or contact me directly at ayubu.7.kaj@gmail.com';
+                        formMessage.className = 'form-feedback error';
+                        formMessage.style.display = 'block';
+                        
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Send Message';
+                        
+                        // Hide message after 5 seconds
+                        setTimeout(function() {
+                            formMessage.style.display = 'none';
+                        }, 5000);
+                    });
+            } else {
+                // Fallback if EmailJS fails to load
+                formMessage.textContent = 'Email service is currently unavailable. Please contact me directly at ayubu.7.kaj@gmail.com';
+                formMessage.className = 'form-feedback error';
+                formMessage.style.display = 'block';
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+            }
         });
 
         // Add animation on scroll
