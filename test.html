@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gradient Follow Cursor</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #4f46e5, #000);
+      transition: background 0.1s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  Move your cursor to see the gradient follow it 🎨
+
+  <script>
+    document.addEventListener("mousemove", (e) => {
+      const x = e.clientX / window.innerWidth * 100;
+      const y = e.clientY / window.innerHeight * 100;
+      document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #6366f1, #0f172a)`;
+    });
+  </script>
+</body>
+</html>
