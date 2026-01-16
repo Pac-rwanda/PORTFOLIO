@@ -92,6 +92,16 @@
             align-items: center;
             padding: 1rem 0;
         }
+
+        #navbar {
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+#navbar.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
         
         .header-logo {
             font-size: 1.5rem;
@@ -1174,6 +1184,55 @@
     justify-content: center;
   }
 }
+
+.rotating-photo-section {
+  padding: 90px 6%;
+  text-align: center;
+  background: linear-gradient(#ebedf8,#4a6cf7);
+}
+
+.rotating-title {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.rotating-subtitle {
+  color: #9b9b9b;
+  margin-bottom: 45px;
+}
+
+.photo-rotator {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 360px;
+  margin: auto;
+  overflow: hidden;
+  border-radius: 22px;
+}
+
+.photo-rotator img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform 0.9s ease, opacity 0.9s ease;
+}
+
+.photo-rotator img.active {
+  transform: translateY(0);
+  opacity: 1;
+  z-index: 2;
+}
+
+.photo-rotator img.exit-up {
+  transform: translateY(-100%);
+  opacity: 0;
+  z-index: 1;
+}
 </style>
 </head>
 <body>
@@ -1411,7 +1470,7 @@ document.addEventListener("keydown", function(e) {
 
     
     <!-- Header -->
-    <header class="header-section">
+    <header class="header-section" id="navbar">
         <div class="main-container">
             <nav class="header-nav">
                 <a href="#" class="header-logo">
@@ -1420,6 +1479,7 @@ document.addEventListener("keydown", function(e) {
                 <ul class="header-navlinks">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#owner">Leadership</a></li>
+                    <li><a href="#photo-section">gallery</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#skills">Skills</a></li>
@@ -1465,7 +1525,7 @@ document.addEventListener("keydown", function(e) {
             </div>
             <div class="owner-wrapper">
                 <div class="owner-visual">
-                    <img src="images/Ayubu.jpg" alt="Kabuye Ayubu - CEO of OZIA">
+                    <img src="images/Ayubu3.jpg" alt="Kabuye Ayubu - CEO of OZIA">
                 </div>
                 <div class="owner-details">
                     <h3>Kabuye Ayubu</h3>
@@ -1494,6 +1554,42 @@ document.addEventListener("keydown", function(e) {
             </div>
         </div>
     </section>
+
+<section id="photo-section" class="rotating-photo-section">
+  <h2 class="rotating-title">Life Outside Coding</h2>
+  <p class="rotating-subtitle">
+    Moments that define me beyond the screen.
+  </p>
+
+  <div class="photo-rotator">
+    <img src="images/Ayubu3.jpg" alt="Kabuye Ayubu portrait photo" class="active">
+    <img src="images/Ayubu2.webp" alt="Kabuye Ayubu face close-up smiling">
+    <img src="images/Ayubu4.jpg" alt="Kabuye Ayubu face close-up">
+    <img src="images/Ayubu.jpg" alt="Kabuye Ayubu enjoying nature">
+  </div>
+</section>
+
+<script>
+  (function () {
+    const rotatingPhotos = document.querySelectorAll('.photo-rotator img');
+    let currentPhotoIndex = 0;
+
+    setInterval(() => {
+      const current = rotatingPhotos[currentPhotoIndex];
+      current.classList.remove('active');
+      current.classList.add('exit-up');
+
+      currentPhotoIndex = (currentPhotoIndex + 1) % rotatingPhotos.length;
+      const next = rotatingPhotos[currentPhotoIndex];
+
+      next.classList.add('active');
+
+      setTimeout(() => {
+        current.classList.remove('exit-up');
+      }, 900);
+    }, 3500);
+  })();
+</script>
 
     <!-- About Section -->
     <section id="about" class="about-section">
@@ -1944,5 +2040,33 @@ document.addEventListener("keydown", function(e) {
             observer.observe(section);
         });
     </script>
+
+<script>
+(function () {
+  const navbar = document.getElementById("navbar");
+  const targetSection = document.getElementById("photo-section");
+
+  if (!navbar || !targetSection) return;
+
+  function handleNavbarVisibility() {
+    const sectionRect = targetSection.getBoundingClientRect();
+    const navHeight = navbar.offsetHeight;
+
+    const sectionTopReached = sectionRect.top <= navHeight;
+    const sectionBottomPassed = sectionRect.bottom <= navHeight;
+
+    if (sectionTopReached && !sectionBottomPassed) {
+      // Navbar is inside the section zone → hide
+      navbar.classList.add("nav-hidden");
+    } else {
+      // Above or below the section → show
+      navbar.classList.remove("nav-hidden");
+    }
+  }
+
+  window.addEventListener("scroll", handleNavbarVisibility);
+})();
+</script>
+
 </body>
 </html>
