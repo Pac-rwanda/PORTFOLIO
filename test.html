@@ -6,32 +6,61 @@
   <title>Gradient Follow Cursor</title>
   <style>
     html, body {
-      height: 100%;
       margin: 0;
       overflow: hidden;
     }
 
     body {
-      background: radial-gradient(circle at center, #4f46e5, #000);
-      transition: background 0.1s ease;
       display: flex;
-      align-items: center;
-      justify-content: center;
       color: white;
       font-family: Arial, sans-serif;
-      font-size: 24px;
     }
+    .navbar{
+      width: 100%;
+      height: 100px;
+      display: flex;
+      gap: 750px;
+      position: absolute;
+      background-color: black;
+      align-items: center;
+    }
+  .nav-logo{
+    width: 20%;
+    height: 70%;
+    border:groove;
+    display: flex;
+    border-bottom-right-radius: 90px;
+    transition:all 2s ease;
+  }
+   .nav-logoa{
+    width: 20%;
+    height: 70%;
+    border:groove;
+    display: flex;
+    border-bottom-left-radius: 90px;
+  }
+     .nav-logob{
+    width: 20%;
+    height: 70%;
+    border:groove;
+    position: absolute;
+    left: 500px;
+    box-sizing: border-box;
+    word-break: break-word;
+    display: flex;
+    transition:all 2s ease;
+  }
+  .nav-logo:hover{
+    transform:scaleX(1.1);
+    border-color:aqua;
+  }
   </style>
 </head>
 <body>
-  Move your cursor to see the gradient follow it 🎨
-
-  <script>
-    document.addEventListener("mousemove", (e) => {
-      const x = e.clientX / window.innerWidth * 100;
-      const y = e.clientY / window.innerHeight * 100;
-      document.body.style.background = `radial-gradient(circle at ${x}% ${y}%, #6366f1, #0f172a)`;
-    });
-  </script>
+<div class="navbar">
+  <div class="nav-logo"></div>
+  <div class="nav-logob"></div>
+  <div class="nav-logoa"></div>
+</div>
 </body>
 </html>
